@@ -1,0 +1,37 @@
+.Modal-body {
+    display: block; 
+    position: fixed; 
+    z-index: 1; 
+    left: 20%;
+    top: 30%;
+    width: 60%; 
+    height: 40%; 
+    background-color: rgba(0,0,0,0.4); 
+    border: solid 1px;
+    color: white;
+}
+
+.Modal-x {
+    display: block;
+    text-align: right;
+    padding-right: 2vw;
+    font-size: 4vh;
+}
+
+.Modal-header {
+    display: inline-block;
+    font-size: 20px;
+}
+
+.Modal-button {
+    width: 80%;
+    margin: 10px;
+    color: white;
+    font-size: 20px;
+}
+
+.Modal-description{
+    width: 65%;
+    float: left;
+    padding: 5%;
+}

@@ -1,0 +1,25 @@
+table {
+  counter-reset: section;
+  color: rgb(241, 225, 241);
+  margin-left: 10%;
+  margin-top: 2vh;
+  background-color: #4d3e47;
+  width: 80%;
+  border-spacing: 5px;
+}
+
+tr::before {
+  counter-increment: section;
+  content: counter(section);
+  font-size: 2vh;
+}
+
+td {
+  border: solid 1px;
+  font-size: 3vh;
+}
+
+a {
+  color: rgb(241, 225, 241);
+  text-decoration: none;
+}
