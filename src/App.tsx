@@ -8,6 +8,10 @@ import { IDevice } from './domain/IDevice';
 import Modal from './Modal';
 import ModalMessage from './ModalMessage';
 import { DeviceApi } from './services/DeviceApi';
+import { io } from 'socket.io-client';
+const socket = io('http://localhost:8080', {
+    transports: ['websocket']
+  });
 
 
 export default class App extends React.Component {
@@ -19,6 +23,8 @@ export default class App extends React.Component {
         store: [],
         count: 0
     }
+
+    
 
     async tick() {
         const data = await DeviceApi.getAll();
@@ -36,10 +42,21 @@ export default class App extends React.Component {
         // }
       }
 
+    componentDidUpdate(){
+        
+        socket.on('update', () => {
+            console.log('Update did need')
+        });
+    }
+
     async componentDidMount() {
+        // socket.on('update', () => {
+        //     console.log('Update need')
+        // });
+
         const data = await DeviceApi.getAll();
         this.setState({ devices: data })
-        const interval = setInterval(() => this.tick(), 5000);
+        //const interval = setInterval(() => this.tick(), 5000);
     }
 
    
