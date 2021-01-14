@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { IDevice } from "../domain/IDevice";
-import { DeviceApi } from "../services/DeviceApi";
 import './Device.css';
 
 interface IProps {

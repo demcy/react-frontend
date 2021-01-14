@@ -1,7 +1,6 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
-import { NumberLiteralType } from 'typescript';
 import './App.css';
 import Device from './components/Devices';
 import { IDevice } from './domain/IDevice';
