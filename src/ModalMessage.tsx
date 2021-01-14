@@ -6,7 +6,7 @@ import { IDevice } from './domain/IDevice';
 interface IProps {
     device: any;
     onCloseModalMessage: any;
-    count: number;
+    condition: string;
 }
 
 interface IState {
@@ -21,14 +21,14 @@ export default class ModalMessage extends React.Component<IProps> {
 
     render() {
         return (
-            <div className="Modal-body">
+            <div className="ModalMessage-body ">
                 <div className="Modal-x">
                     <a onClick={this.props.onCloseModalMessage.bind(this)} href="#">x</a>
                 </div>
                 <div style={{ paddingLeft: '5%', paddingRight: '5%' }}>
-                    <h3>Someone changed the data:</h3>
+                    <h2>Someone changed the data:</h2>
                     
-                    <div className="Modal-header" style={{ width: '70%' }}>{this.state.device.name}</div>
+                    <div className="Modal-header" style={{ width: '70%' }}>{this.state.device.name} quantity {this.props.condition} by 1</div>
                     
                     
                 </div>

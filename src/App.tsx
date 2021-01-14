@@ -21,42 +21,22 @@ export default class App extends React.Component {
         device: null,
         devices: [],
         store: [],
-        count: 0
-    }
-
-    
-
-    async tick() {
-        const data = await DeviceApi.getAll();
-        if(JSON.stringify(data) !== JSON.stringify(this.state.devices)){
-            console.log(JSON.stringify(data))
-            console.log(JSON.stringify(this.state.devices))
-            this.setState((state) => ({ 
-                showModal: false,
-                showMessage: true 
-            }))
-        }
-        // if (data.every((v,i) => v === this.state.devices[i])){
-        //     console.log('false')
-        // this.setState({ count: this.state.count + 1 })
-        // }
-      }
-
-    componentDidUpdate(){
-        
-        socket.on('update', () => {
-            console.log('Update did need')
-        });
+        count: 0,
+        updatedDevice: null,
+        condition: '',
+        id: 0
     }
 
     async componentDidMount() {
-        // socket.on('update', () => {
-        //     console.log('Update need')
-        // });
-
+        socket.on('update', (data: IDevice, condition: string) => {
+            this.setState({ 
+                showMessage: true,
+                updatedDevice: data,
+                condition
+            })
+        });
         const data = await DeviceApi.getAll();
         this.setState({ devices: data })
-        //const interval = setInterval(() => this.tick(), 5000);
     }
 
    
@@ -72,7 +52,8 @@ export default class App extends React.Component {
         this.setState({
             device: data,
             showModal: true,
-            count
+            count,
+            id
         })
     }
 
@@ -92,6 +73,7 @@ export default class App extends React.Component {
     async addItem(id: number) {
         const data = await DeviceApi.getById(id);
         if (data.count > 0) {
+            socket.emit('serverupdate', data, 'decreased')
             data.count = data.count - 1;
             const data2 = await DeviceApi.updateById(id, data);
             const data3 = await DeviceApi.getAll();
@@ -121,6 +103,7 @@ export default class App extends React.Component {
         const data = await DeviceApi.getById(id);
         const count = this.deviceCount(data.name)
         if (count > 0) {
+            socket.emit('serverupdate', data, 'increased')
             const store: String[] = [...this.state.store];
             const index = store.indexOf(data.name)
             store.splice(index, 1)
@@ -153,8 +136,20 @@ export default class App extends React.Component {
         })
     }
 
-    closeModalMessage = () => {
+    async closeModalMessage(){
+        const data = await DeviceApi.getAll();
+        if(this.state.showModal){
+            const data1 = await DeviceApi.getById(this.state.id);
+            this.setState({
+                device: data1,
+                showModal: false
+            })
+            this.setState({
+                showModal: true
+            })
+        }
         this.setState({
+            devices: data,
             showMessage: false
         })
     }
@@ -179,8 +174,8 @@ export default class App extends React.Component {
                     : null}
                 {this.state.showMessage
                     ? <ModalMessage
-                        device={this.state.device}
-                        count={this.state.count}
+                        device={this.state.updatedDevice}
+                        condition={this.state.condition}
                         onCloseModalMessage={this.closeModalMessage.bind(this)}
                          />
                     : null}
